@@ -1,0 +1,1184 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paneles al Sol</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;800&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* Layout: hoja crema tipo collage sobre tapete verde cuadriculado, secciones apiladas, simulador como pieza central */
+:root{
+  --mat:#2E7A53; --mat-line:rgba(255,255,255,.09);
+  --paper:#FFFDF8; --paper-2:#F6F1E4;
+  --ink:#111111; --muted:#5d5a52; --rule:#E6E0D2;
+  --yellow:#FFE45E; --sky:#BFE3FF; --red:#E5484D; --blue:#3D7BFF; --green-ok:#1F8A4C;
+  --f-display:"Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --f-serif:"Instrument Serif", Georgia, "Times New Roman", serif;
+  --f-hand:"Caveat", "Segoe Print", "Comic Sans MS", cursive;
+  --f-mono:"Space Mono", ui-monospace, Consolas, monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{
+  background-color:var(--mat); color:var(--ink);
+  background-image:linear-gradient(var(--mat-line) 1px,transparent 1px),linear-gradient(90deg,var(--mat-line) 1px,transparent 1px);
+  background-size:28px 28px;
+  font-family:var(--f-display); font-size:16px; line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:28px 48px;
+}
+a{color:var(--ink); text-decoration-color:var(--blue); text-underline-offset:3px; text-decoration-thickness:2px}
+a:hover{background:var(--sky)}
+:focus-visible{outline:3px solid var(--blue); outline-offset:2px}
+.sheet{
+  max-width:1120px; margin:0 auto; background:var(--paper);
+  padding-block:clamp(32px,5vw,64px); padding-inline:clamp(18px,5vw,64px);
+  box-shadow:0 2px 0 rgba(0,0,0,.08), 0 24px 60px rgba(0,0,0,.28);
+  position:relative;
+}
+.tag{font-family:var(--f-mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.serif{font-family:var(--f-serif); font-style:italic; font-weight:400; letter-spacing:-.01em}
+.hand{font-family:var(--f-hand); font-weight:700}
+.hl{background:linear-gradient(transparent 52%, var(--yellow) 52%, var(--yellow) 90%, transparent 90%); padding:0 .08em}
+.hl-sky{background:linear-gradient(transparent 52%, var(--sky) 52%, var(--sky) 90%, transparent 90%); padding:0 .08em}
+h1,h2,h3{margin:0; text-wrap:balance}
+h2{font-weight:800; font-size:clamp(34px,5.4vw,58px); letter-spacing:-.05em; line-height:.98}
+h2 .serif{font-size:1.1em; letter-spacing:-.02em}
+h3{font-weight:800; font-size:22px; letter-spacing:-.03em; line-height:1.15}
+p{margin:0; max-width:66ch}
+section{display:grid; gap:22px; padding-top:clamp(48px,7vw,84px)}
+.sec-head{display:grid; gap:10px}
+.lede{color:var(--muted); font-size:17px}
+
+/* tape & post-its */
+.tape{position:absolute; width:120px; height:30px; background:repeating-linear-gradient(45deg, rgba(255,228,94,.85) 0 10px, rgba(255,240,170,.85) 10px 20px); box-shadow:0 1px 2px rgba(0,0,0,.12); z-index:2}
+.tape.sky{background:repeating-linear-gradient(-45deg, rgba(191,227,255,.9) 0 10px, rgba(225,242,255,.9) 10px 20px)}
+.postit{background:var(--yellow); padding:16px 18px 18px; font-family:var(--f-hand); font-size:24px; line-height:1.1; box-shadow:0 10px 18px rgba(0,0,0,.16); transform:rotate(-2deg); position:relative}
+.postit.sky{background:var(--sky); transform:rotate(1.6deg)}
+.postit small{display:block; font-family:var(--f-display); font-size:13px; line-height:1.4; margin-top:8px; font-weight:500}
+
+/* HERO */
+.hero{display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:clamp(24px,4vw,48px); align-items:end}
+.hero h1{font-weight:800; font-size:clamp(64px,12vw,150px); letter-spacing:-.065em; line-height:.84; margin-top:18px}
+.hero h1 .serif{display:inline-block; font-size:1.12em; letter-spacing:-.03em; transform:translateY(.04em)}
+.hero .sub{font-family:var(--f-serif); font-style:italic; font-size:clamp(24px,3vw,34px); line-height:1.1; margin-top:14px; max-width:22ch}
+.hero .intro{margin-top:22px; font-size:17px}
+.hero-side{display:grid; gap:22px; justify-items:start}
+.sun{width:min(240px,100%); max-width:100%; height:auto}
+.stats{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; margin-top:clamp(32px,5vw,52px); border-top:2px solid var(--ink); border-bottom:2px solid var(--ink)}
+.stat{padding:16px 14px 14px; display:grid; gap:2px}
+.stat + .stat{border-left:1px solid var(--rule)}
+.stat b{font-weight:800; font-size:clamp(36px,5vw,56px); letter-spacing:-.05em; line-height:1; font-variant-numeric:tabular-nums}
+.stat span{font-size:14px; color:var(--muted)}
+
+/* AVANCE */
+.avance{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(18px,3vw,32px)}
+.col{position:relative; padding:26px 24px 24px; border:1.5px solid var(--ink); background:var(--paper)}
+.col.done{background:var(--paper-2)}
+.col .tape{top:-14px; left:24px; transform:rotate(-3deg)}
+.col h3{margin-bottom:14px}
+.checks{list-style:none; margin:0; padding:0; display:grid; gap:10px}
+.checks li{display:grid; grid-template-columns:26px minmax(0,1fr); gap:10px; align-items:start}
+.box{width:22px; height:22px; border:2px solid var(--ink); display:grid; place-items:center; margin-top:1px; background:var(--paper)}
+.box svg{width:16px; height:16px}
+
+/* FASES */
+.phases{list-style:none; margin:0; padding:0; display:grid; gap:0; border-top:2px solid var(--ink)}
+.phase{display:grid; grid-template-columns:88px minmax(0,190px) minmax(0,1fr); gap:clamp(14px,3vw,28px); padding:22px 0; border-bottom:1px solid var(--rule); position:relative}
+.phase .n{font-weight:800; font-size:64px; letter-spacing:-.06em; line-height:.8; font-variant-numeric:tabular-nums}
+.phase .when{display:grid; gap:8px; align-content:start}
+.phase .when .tag{color:var(--ink)}
+.phase h3{margin-bottom:6px}
+.phase p{color:#2b2a26}
+.phase .out{margin-top:10px; font-size:14px; color:var(--muted)}
+.phase .out b{font-family:var(--f-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); margin-right:6px}
+.chip{display:inline-flex; align-items:center; gap:6px; width:max-content; font-family:var(--f-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:4px 9px; border:1.5px solid var(--ink); border-radius:999px; background:var(--paper)}
+.chip.done{background:var(--ink); color:var(--paper)}
+.chip.now{background:var(--yellow)}
+.chip.next{background:var(--sky)}
+.phase.is-now{background:linear-gradient(90deg, rgba(255,228,94,.28), rgba(255,228,94,0) 70%)}
+.phase .planb{font-family:var(--f-hand); font-size:22px; color:var(--red); margin-top:6px; display:block}
+
+/* MATERIAL */
+.mat-grid{display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:clamp(20px,4vw,40px); align-items:start}
+.shop{list-style:none; margin:0; padding:0; border-top:2px solid var(--ink)}
+.shop li{display:grid; grid-template-columns:54px minmax(0,1fr); gap:14px; padding:14px 0; border-bottom:1px solid var(--rule)}
+.shop .qty{font-family:var(--f-mono); font-weight:700; font-size:20px; font-variant-numeric:tabular-nums}
+.shop .what{font-weight:600}
+.shop .note{font-size:14px; color:var(--muted); display:block}
+.shop .links{display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:4px; font-size:14px}
+
+/* SIMULADOR */
+.sim{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,340px); gap:clamp(18px,3vw,32px); align-items:start}
+.panel-card{border:1.5px solid var(--ink); background:var(--paper); padding:18px; position:relative}
+.controls{display:grid; gap:16px}
+.seg{display:flex; flex-wrap:wrap; gap:8px}
+.seg button{font:600 14px/1 var(--f-display); padding:10px 14px; border:1.5px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer; border-radius:999px}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+.seg button:hover{background:var(--sky)}
+.seg button[aria-pressed="true"]:hover{background:var(--ink)}
+.field{display:grid; gap:6px}
+.field label{display:flex; justify-content:space-between; gap:10px; font-family:var(--f-mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+.field label output{color:var(--ink); font-weight:700; text-transform:none; letter-spacing:0}
+input[type=range]{width:100%; accent-color:var(--ink)}
+select{font:500 15px var(--f-display); padding:8px 10px; border:1.5px solid var(--ink); background:var(--paper); color:var(--ink); border-radius:0; max-width:100%}
+.plot-wrap{overflow-x:auto}
+.plot{display:block; width:100%; min-width:520px; height:auto}
+.legend{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:14px; align-items:center; margin-bottom:8px}
+.legend i{display:inline-block; width:26px; height:0; border-top:3px solid var(--blue); vertical-align:middle; margin-right:6px}
+.legend i.p{border-top:3px dashed var(--red)}
+.legend i.dot{width:10px; height:10px; border:2px solid var(--ink); border-radius:50%; background:var(--paper); margin-right:6px}
+.meter{background:var(--ink); color:var(--yellow); padding:16px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 16px; font-family:var(--f-mono)}
+.meter div{display:grid; gap:2px}
+.meter small{font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:#cfc8b0}
+.meter b{font-size:24px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1}
+.rule60{font-size:14px; padding:10px 12px; border:1.5px dashed var(--ink)}
+.rule60.ok{background:rgba(31,138,76,.10)}
+.rule60.bad{background:rgba(229,72,77,.12)}
+.keyvals{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; border-top:2px solid var(--ink); border-bottom:1px solid var(--rule); margin-top:14px}
+.keyvals div{padding:10px 10px 8px; display:grid; gap:2px}
+.keyvals div + div{border-left:1px solid var(--rule)}
+.keyvals small{font-family:var(--f-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.keyvals b{font-size:20px; font-weight:800; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.diagram{width:100%; height:auto; display:block}
+.rchips{display:flex; flex-wrap:wrap; gap:6px}
+.rchips span{font-family:var(--f-mono); font-size:12px; padding:3px 8px; background:var(--sky); font-variant-numeric:tabular-nums}
+.tips{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; margin-top:8px}
+.tips .postit{font-size:21px}
+.tips .postit:nth-child(2){transform:rotate(1.8deg)}
+.tips .postit:nth-child(3){transform:rotate(-1deg)}
+.tips .postit:nth-child(4){transform:rotate(2.4deg)}
+
+/* TABLA LECTURAS */
+.readings{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(18px,3vw,32px); align-items:start}
+.tbl-wrap{overflow-x:auto; border-top:2px solid var(--ink)}
+table{border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums}
+th{font-family:var(--f-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; text-align:left; padding:8px 8px; border-bottom:1px solid var(--ink); font-weight:700}
+td{padding:4px 8px; border-bottom:1px solid var(--rule)}
+td.num{font-family:var(--f-mono); font-size:14px}
+td input{width:100%; min-width:70px; font:500 15px var(--f-mono); padding:6px 6px; border:1px solid transparent; background:var(--paper-2); color:var(--ink)}
+td input:focus{border-color:var(--ink); background:var(--paper)}
+.btns{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+.btn{font:600 14px/1 var(--f-display); padding:10px 14px; border:1.5px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer}
+.btn:hover{background:var(--sky)}
+.btn.warn{border-color:var(--red); color:var(--red)}
+.btn.warn.armed{background:var(--red); color:var(--paper)}
+#csvOut{width:100%; font:13px var(--f-mono); margin-top:10px; min-height:90px; border:1px solid var(--ink); background:var(--paper-2); color:var(--ink); padding:8px}
+.formula{font-family:var(--f-mono); font-size:clamp(15px,2.2vw,20px); background:var(--paper-2); padding:14px 16px; border-left:4px solid var(--yellow); overflow-x:auto; white-space:nowrap}
+.energy-out{font-weight:800; font-size:clamp(40px,6vw,64px); letter-spacing:-.05em; line-height:1; font-variant-numeric:tabular-nums}
+
+/* PREGUNTAS */
+.qs{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 clamp(18px,3vw,36px)}
+.q{display:grid; grid-template-columns:36px minmax(0,1fr); gap:12px; padding:16px 0; border-top:1px solid var(--rule)}
+.q .qn{font-family:var(--f-mono); font-weight:700; font-size:14px; padding-top:3px}
+.q p.qq{font-weight:600}
+.q .src{font-size:14px; color:var(--muted); margin-top:4px}
+
+/* VIDEO */
+.timeline{display:flex; width:100%; height:54px; border:2px solid var(--ink); overflow:hidden}
+.timeline div{display:flex; align-items:center; justify-content:center; font-family:var(--f-mono); font-size:12px; border-right:1.5px solid var(--ink); min-width:0; white-space:nowrap; overflow:hidden; padding:0 4px}
+.timeline div:last-child{border-right:0}
+.timeline .y{background:var(--yellow)} .timeline .s{background:var(--sky)} .timeline .w{background:var(--paper)}
+.scenes{list-style:none; margin:0; padding:0; display:grid; gap:0; border-top:2px solid var(--ink)}
+.scene{display:grid; grid-template-columns:120px minmax(0,1fr) minmax(0,180px); gap:16px; padding:14px 0; border-bottom:1px solid var(--rule); align-items:start}
+.scene .t{font-family:var(--f-mono); font-weight:700; font-variant-numeric:tabular-nums}
+.scene .who{font-family:var(--f-hand); font-size:22px; line-height:1.1}
+.scene p{font-size:15px; color:#2b2a26}
+.scene b{display:block; font-weight:700; margin-bottom:2px; color:var(--ink)}
+
+footer{margin-top:clamp(48px,7vw,80px); padding-top:18px; border-top:2px solid var(--ink); display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px}
+
+/* REPORTE */
+.hero{align-items:center}
+.prog{margin-top:clamp(28px,4vw,44px); display:grid; gap:12px}
+.prog-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+.prog-big{font-weight:800; font-size:clamp(44px,7vw,84px); letter-spacing:-.06em; line-height:.9}
+.prog-big .serif{font-size:.8em; letter-spacing:-.02em}
+.prog-bar{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:6px}
+.prog-bar i{height:24px; border:2px solid var(--ink); background:var(--paper); display:block}
+.prog-bar i.done{background:var(--ink)}
+.prog-bar i.now{background:repeating-linear-gradient(45deg,var(--yellow) 0 8px,#FFF3A8 8px 16px)}
+.prog-steps{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:6px}
+.prog-steps div{display:grid; gap:2px; min-width:0}
+.prog-steps b{font-weight:700; font-size:14px; line-height:1.15}
+.prog-steps span{font-family:var(--f-mono); font-size:10.5px; color:var(--muted)}
+.prog-steps .is-now b{background:var(--yellow); width:max-content; max-width:100%; padding:0 3px}
+.wins{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px}
+.win{border:2px solid var(--ink); padding:16px 14px 14px; display:grid; gap:10px; align-content:start; background:var(--paper); box-shadow:4px 4px 0 var(--ink)}
+.win:nth-child(odd){transform:rotate(-1deg)}
+.win:nth-child(even){transform:rotate(.9deg)}
+.win .ok{width:34px; height:34px; border-radius:50%; background:var(--yellow); border:2px solid var(--ink); display:grid; place-items:center}
+.win b{font-weight:800; font-size:21px; letter-spacing:-.035em; line-height:1.1}
+.win .tag{font-size:10.5px}
+.finds{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-top:2px solid var(--ink)}
+.find{padding:20px 18px 18px; border-bottom:1px solid var(--rule); display:grid; gap:8px; align-content:start}
+.find:not(:nth-child(3n+1)){border-left:1px solid var(--rule)}
+.find b{font-weight:800; font-size:clamp(44px,7vw,88px); letter-spacing:-.06em; line-height:.9; font-variant-numeric:tabular-nums; white-space:nowrap}
+.find b .u{font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:.55em; letter-spacing:0}
+.find span{font-size:15px; color:var(--muted)}
+.find.hot b{color:var(--red)}
+.find.blue b{color:var(--blue)}
+.rline{display:grid; gap:8px}
+.two{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(28px,4vw,48px); align-items:start}
+.kit,.qlist{list-style:none; margin:0; padding:0; border-top:2px solid var(--ink)}
+.kit li,.qlist li{display:grid; gap:12px; padding:11px 0; border-bottom:1px solid var(--rule); align-items:center}
+.kit li{grid-template-columns:40px minmax(0,1fr) auto}
+.qlist li{grid-template-columns:30px minmax(0,1fr) auto}
+.kit .qty{font-family:var(--f-mono); font-weight:700; font-size:20px}
+.kit .what,.qlist .what{font-weight:600}
+.kit a{font-family:var(--f-mono); font-size:13px}
+.kit .tag{font-size:10px; text-align:right}
+.qlist .qn{font-family:var(--f-mono); font-weight:700; font-size:13px}
+.scene{grid-template-columns:70px minmax(0,1fr) minmax(0,190px); align-items:center; padding:10px 0}
+.scene p b{margin:0; font-size:17px}
+
+/* EXPERIMENTO 3D */
+.stage{position:relative; height:clamp(340px,52vw,560px); border:1.5px solid var(--ink); background:linear-gradient(180deg,#BFE3FF 0%,#E4F2FF 48%,#FFFDF8 100%); overflow:hidden}
+.stage canvas{display:block; width:100%; height:100%; cursor:grab}
+.stage canvas:active{cursor:grabbing}
+.stage-hint{position:absolute; left:14px; bottom:8px; font-family:var(--f-hand); font-weight:700; font-size:22px; pointer-events:none; color:var(--ink)}
+.stage-clock{position:absolute; right:14px; top:12px; background:var(--paper); border:1.5px solid var(--ink); padding:6px 12px 8px; display:grid; gap:0; pointer-events:none; box-shadow:3px 3px 0 var(--ink)}
+.stage-clock b{font-family:var(--f-mono); font-size:30px; line-height:1; font-variant-numeric:tabular-nums}
+.stage-msg{position:absolute; inset:0; display:grid; place-items:center; padding:24px; text-align:center; font-weight:600; background:var(--paper-2)}
+.stage-msg[hidden]{display:none}
+.stage .tape{top:-12px; left:40%; transform:rotate(-2deg)}
+.ctl3{display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr); gap:18px 28px; align-items:end}
+.hour-row{display:flex; gap:10px; align-items:center}
+.hour-row input{flex:1; min-width:0}
+.switch{display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:600; font-size:15px}
+.switch input{appearance:none; -webkit-appearance:none; width:46px; height:26px; border:1.5px solid var(--ink); border-radius:999px; background:var(--paper); position:relative; cursor:pointer; flex:none; margin:0}
+.switch input::after{content:""; position:absolute; top:3px; left:3px; width:17px; height:17px; border-radius:50%; background:var(--ink); transition:left .15s}
+.switch input:checked{background:var(--yellow)}
+.switch input:checked::after{left:22px}
+.readout3{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); border-top:2px solid var(--ink); border-bottom:1px solid var(--rule)}
+.readout3 div{padding:10px 10px 8px; display:grid; gap:2px}
+.readout3 div + div{border-left:1px solid var(--rule)}
+.readout3 small{font-family:var(--f-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.readout3 b{font-size:22px; font-weight:800; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+#heatNote{font-family:var(--f-hand); font-weight:700; font-size:23px; min-height:1.2em}
+#heatNote.hot{color:var(--red)}
+
+@media (max-width:900px){
+  .wins{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .finds{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .find:not(:nth-child(3n+1)){border-left:0}
+  .find:nth-child(even){border-left:1px solid var(--rule)}
+  .two{grid-template-columns:minmax(0,1fr)}
+  .prog-steps b{font-size:12px}
+  .prog-steps span{font-size:9.5px}
+  .ctl3{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .ctl3 .field-cfg{grid-column:1 / -1}
+  .hero,.mat-grid,.sim,.readings{grid-template-columns:minmax(0,1fr)}
+  .tips{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .qs{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .wins{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .prog-steps{grid-template-columns:minmax(0,1fr); gap:4px}
+  .prog-steps div{grid-template-columns:110px minmax(0,1fr); align-items:baseline}
+  .prog-steps b{font-size:14px}
+  .scene{grid-template-columns:52px minmax(0,1fr)}
+  .kit .tag{display:none}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--rule)}
+  .avance{grid-template-columns:minmax(0,1fr)}
+  .phase{grid-template-columns:56px minmax(0,1fr)}
+  .phase .n{font-size:44px}
+  .phase .body{grid-column:2}
+  .keyvals{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .keyvals div:nth-child(3){border-left:0}
+  .tips{grid-template-columns:minmax(0,1fr)}
+  .scene{grid-template-columns:84px minmax(0,1fr)}
+  .scene .who{grid-column:2}
+  .timeline div{font-size:10px}
+  .ctl3{grid-template-columns:minmax(0,1fr)}
+  .readout3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .readout3 div:nth-child(odd){border-left:0}
+  .readout3 div:nth-child(n+3){border-top:1px solid var(--rule)}
+  .readout3 div:last-child{grid-column:1 / -1}
+  .stage-clock b{font-size:22px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .sun .rays{transform-origin:120px 120px; animation:spin 40s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+}
+</style>
+
+<main class="sheet">
+  <span class="tape" style="top:-12px; left:clamp(24px,8vw,90px); transform:rotate(-4deg)"></span>
+  <span class="tape sky" style="top:-10px; right:clamp(24px,8vw,90px); transform:rotate(5deg)"></span>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <div class="tag">TE1020.308 / Reporte de avances / 26 nov 2026</div>
+      <h1>Paneles al <span class="serif">sol</span></h1>
+      <p class="sub">situación problema de energía fotovoltaica</p>
+    </div>
+    <div class="hero-side">
+      <svg class="sun" viewBox="0 0 240 240" role="img" aria-label="Dibujo de un sol sobre un panel solar">
+        <g class="rays" stroke="#111111" stroke-width="5" stroke-linecap="round">
+          <line x1="120" y1="14" x2="120" y2="38"/><line x1="120" y1="202" x2="120" y2="226"/>
+          <line x1="14" y1="120" x2="38" y2="120"/><line x1="202" y1="120" x2="226" y2="120"/>
+          <line x1="45" y1="45" x2="62" y2="62"/><line x1="178" y1="178" x2="195" y2="195"/>
+          <line x1="45" y1="195" x2="62" y2="178"/><line x1="178" y1="62" x2="195" y2="45"/>
+        </g>
+        <circle cx="120" cy="120" r="62" fill="#FFE45E" stroke="#111111" stroke-width="5"/>
+        <g transform="translate(70 128) rotate(-8)">
+          <rect x="0" y="0" width="112" height="70" fill="#BFE3FF" stroke="#111111" stroke-width="5"/>
+          <path d="M37 0V70M75 0V70M0 35H112" stroke="#3D7BFF" stroke-width="3" fill="none"/>
+        </g>
+      </svg>
+      <div class="postit">entrega = video de 5 min, salimos todos</div>
+    </div>
+  </header>
+
+  <!-- AVANCE -->
+  <div class="prog" aria-label="Avance por fases">
+    <div class="prog-head">
+      <span class="tag">Vamos en</span>
+      <b class="prog-big">Fase 2 <span class="serif">de 7</span></b>
+    </div>
+    <div class="prog-bar" aria-hidden="true"><i class="done"></i><i class="now"></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="prog-steps">
+      <div class="is-done"><b>Planear</b><span>01 / 23 al 26 nov</span></div>
+      <div class="is-now"><b>Investigar</b><span>02 / 26 al 29 nov</span></div>
+      <div><b>Material</b><span>03 / 27 y 28 nov</span></div>
+      <div><b>Medir al sol</b><span>04 / 28 o 29 nov</span></div>
+      <div><b>Analizar</b><span>05 / 30 nov al 2 dic</span></div>
+      <div><b>Video</b><span>06 / 2 al 4 dic</span></div>
+      <div><b>Entregar</b><span>07 / 4 dic</span></div>
+    </div>
+  </div>
+
+  <!-- LOGROS -->
+  <section id="logros">
+    <div class="sec-head">
+      <div class="tag">Ya lo tenemos</div>
+      <h2>Lo que <span class="serif">llevamos</span></h2>
+    </div>
+    <div class="wins">
+      <div class="win"><span class="ok"><svg viewBox="0 0 16 16" width="18" height="18"><path d="M2 8.5l4 4L14 3" stroke="#111111" stroke-width="2.8" fill="none" stroke-linecap="round"/></svg></span><b>Plan por fases</b><span class="tag">7 fases con fecha</span></div>
+      <div class="win"><span class="ok"><svg viewBox="0 0 16 16" width="18" height="18"><path d="M2 8.5l4 4L14 3" stroke="#111111" stroke-width="2.8" fill="none" stroke-linecap="round"/></svg></span><b>Circuito definido</b><span class="tag">V en paralelo, A en serie</span></div>
+      <div class="win"><span class="ok"><svg viewBox="0 0 16 16" width="18" height="18"><path d="M2 8.5l4 4L14 3" stroke="#111111" stroke-width="2.8" fill="none" stroke-linecap="round"/></svg></span><b>Panel elegido</b><span class="tag">6 V y 100 mA</span></div>
+      <div class="win"><span class="ok"><svg viewBox="0 0 16 16" width="18" height="18"><path d="M2 8.5l4 4L14 3" stroke="#111111" stroke-width="2.8" fill="none" stroke-linecap="round"/></svg></span><b>Curvas simuladas</b><span class="tag">4 pruebas modeladas</span></div>
+      <div class="win"><span class="ok"><svg viewBox="0 0 16 16" width="18" height="18"><path d="M2 8.5l4 4L14 3" stroke="#111111" stroke-width="2.8" fill="none" stroke-linecap="round"/></svg></span><b>Experimento en 3D</b><span class="tag">armado virtual</span></div>
+    </div>
+  </section>
+
+  <!-- EXPERIMENTO 3D -->
+  <section id="experimento">
+    <div class="sec-head">
+      <div class="tag">Armado virtual</div>
+      <h2>El experimento en <span class="serif">3D</span></h2>
+    </div>
+    <div class="stage" id="stage3d" role="img" aria-label="Modelo 3D de los paneles solares conectados al amperímetro, al voltímetro y al potenciómetro">
+      <span class="tape sky"></span>
+      <div class="stage-hint">arrastra para girar</div>
+      <div class="stage-clock"><span class="tag">hora</span><b id="clk3">11:30</b></div>
+      <p class="stage-msg" id="msg3" hidden>No cargó el 3D, recarga la página.</p>
+    </div>
+    <div class="ctl3">
+      <div class="field field-cfg">
+        <span class="tag" id="cfg3Label">Prueba</span>
+        <div class="seg" role="group" aria-labelledby="cfg3Label" id="cfg3Seg">
+          <button type="button" data-cfg="uno" aria-pressed="true">Un panel</button>
+          <button type="button" data-cfg="par" aria-pressed="false">Paralelo</button>
+          <button type="button" data-cfg="serie" aria-pressed="false">Serie</button>
+          <button type="button" data-cfg="sombra" aria-pressed="false">Serie con sombra</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="hour3">Hora del día <output id="hour3O">11:30</output></label>
+        <div class="hour-row">
+          <input type="range" id="hour3" min="7" max="19" step="0.05" value="11.5">
+          <button type="button" class="btn" id="play3">Ver el día</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="pot3">Potenciómetro <output id="pot3O">-</output></label>
+        <input type="range" id="pot3" min="0" max="100" step="0.5" value="71">
+      </div>
+      <label class="switch" for="aim3"><input type="checkbox" id="aim3"> Apuntar al sol</label>
+    </div>
+    <div class="readout3">
+      <div><small>Sol que le llega</small><b id="r3G">-</b></div>
+      <div><small>Ángulo con el sol</small><b id="r3A">-</b></div>
+      <div><small>Voltímetro</small><b id="r3V">-</b></div>
+      <div><small>Amperímetro</small><b id="r3I">-</b></div>
+      <div><small>Potencia</small><b id="r3P">-</b></div>
+    </div>
+    <p id="heatNote"></p>
+  </section>
+
+  <!-- HALLAZGOS -->
+  <section id="hallazgos">
+    <div class="sec-head">
+      <div class="tag">Antes de medir ya sabemos</div>
+      <h2><span class="hl">Hallazgos</span></h2>
+    </div>
+    <div class="finds">
+      <div class="find"><b>61<span class="u"> Ω</span></b><span>ahí sale la potencia máx</span></div>
+      <div class="find blue"><b>2x<span class="u"> V</span></b><span>en serie</span></div>
+      <div class="find blue"><b>2x<span class="u"> I</span></b><span>en paralelo</span></div>
+      <div class="find hot"><b>-25<span class="u">%</span></b><span>de potencia con 30% de sombra</span></div>
+      <div class="find"><b>200<span class="u"> mA</span></b><span>tope del multímetro en paralelo</span></div>
+      <div class="find hot"><b>1<span class="u"> W</span></b><span>el pot llega al límite</span></div>
+    </div>
+  </section>
+
+  <!-- SIMULADOR -->
+  <section id="simulador">
+    <div class="sec-head">
+      <div class="tag">Simulación, modelo de un diodo</div>
+      <h2>Las curvas que <span class="serif">esperamos</span></h2>
+    </div>
+
+    <div class="sim">
+      <div class="panel-card">
+        <div class="controls">
+          <div class="field">
+            <span class="tag" id="cfgLabel">Prueba</span>
+            <div class="seg" role="group" aria-labelledby="cfgLabel" id="cfgSeg">
+              <button type="button" data-cfg="uno" aria-pressed="true">Un panel</button>
+              <button type="button" data-cfg="par" aria-pressed="false">Paralelo</button>
+              <button type="button" data-cfg="serie" aria-pressed="false">Serie</button>
+              <button type="button" data-cfg="sombra" aria-pressed="false">Serie con sombra 30%</button>
+            </div>
+          </div>
+        </div>
+        <div class="legend" style="margin-top:18px">
+          <span><i></i>I-V</span>
+          <span><i class="p"></i>P-V</span>
+          <span><i class="dot"></i>medido</span>
+        </div>
+        <div class="plot-wrap"><svg class="plot" id="plot" viewBox="0 0 640 380" role="img" aria-label="Curvas I-V y P-V simuladas"></svg></div>
+        <div class="keyvals">
+          <div><small>Isc</small><b id="kvIsc">-</b></div>
+          <div><small>Voc</small><b id="kvVoc">-</b></div>
+          <div><small>Potencia máx</small><b id="kvPmp">-</b></div>
+          <div><small>R en Pmáx</small><b id="kvRmp">-</b></div>
+        </div>
+      </div>
+
+      <div style="display:grid; gap:16px">
+        <div class="panel-card">
+          <span class="tag">Así va conectado</span>
+          <svg class="diagram" id="diagram" viewBox="0 0 520 260" role="img" aria-label="Diagrama del circuito de medición"></svg>
+        </div>
+        <div class="panel-card controls">
+          <div class="field">
+            <label for="panelSel">Panel</label>
+            <select id="panelSel">
+              <option value="p6">6 V / 100 mA</option>
+              <option value="p3">3 V / 150 mA</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sunR">Sol <output id="sunO">90%</output></label>
+            <input type="range" id="sunR" min="20" max="100" step="1" value="90">
+          </div>
+          <div class="field">
+            <label for="potR">Potenciómetro <output id="potO">-</output></label>
+            <input type="range" id="potR" min="0" max="100" step="0.5" value="55">
+          </div>
+          <div class="meter" aria-live="polite">
+            <div><small>Voltímetro</small><b id="mV">-</b></div>
+            <div><small>Amperímetro</small><b id="mI">-</b></div>
+            <div><small>Potencia</small><b id="mP">-</b></div>
+            <div><small>Carga</small><b id="mR">-</b></div>
+          </div>
+          <div class="rule60" id="rule60"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rline">
+      <span class="tag">R a probar con el pot</span>
+      <div class="rchips" id="rchips"></div>
+    </div>
+  </section>
+
+  <!-- MATERIAL Y PREGUNTAS -->
+  <section id="plan">
+    <div class="two">
+      <div>
+        <div class="sec-head" style="margin-bottom:16px">
+          <div class="tag">Fase 3</div>
+          <h2>El <span class="serif">kit</span></h2>
+        </div>
+        <ul class="kit">
+          <li><span class="qty">2</span><span class="what">Paneles 6 V / 100 mA</span><a href="https://www.steren.com.mx/panel-solar-de-6-vcc-y-100-ma.html" target="_blank" rel="noopener">Steren</a></li>
+          <li><span class="qty">1</span><span class="what">Potenciómetro 1 kΩ, 1 W</span><span></span></li>
+          <li><span class="qty">2</span><span class="what">Multímetros</span><span></span></li>
+          <li><span class="qty">8</span><span class="what">Cables caimán</span><span></span></li>
+          <li><span class="qty">1</span><span class="what">Cartulina negra</span><span class="tag">sombra 30%</span></li>
+          <li><span class="qty">1</span><span class="what">Palito para apuntar</span><span class="tag">sin sombra = perpendicular</span></li>
+          <li><span class="qty">1</span><span class="what">Celular con tripié</span><span></span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="sec-head" style="margin-bottom:16px">
+          <div class="tag">Fase 2, van al foro</div>
+          <h2>Preguntas <span class="serif">detonadoras</span></h2>
+        </div>
+        <ol class="qlist">
+          <li><span class="qn">01</span><span class="what">Capacidad solar en México</span><span class="chip now">investigando</span></li>
+          <li><span class="qn">02</span><span class="what">% del total que es solar</span><span class="chip now">investigando</span></li>
+          <li><span class="qn">03</span><span class="what">Celda, módulo y arreglo</span><span class="chip now">investigando</span></li>
+          <li><span class="qn">04</span><span class="what">Voc e Isc</span><span class="chip next">lo medimos</span></li>
+          <li><span class="qn">05</span><span class="what">Curvas I-V y P-V</span><span class="chip next">lo medimos</span></li>
+          <li><span class="qn">06</span><span class="what">Punto de máxima potencia</span><span class="chip next">lo medimos</span></li>
+          <li><span class="qn">07</span><span class="what">Energía al año</span><span class="chip next">lo calculamos</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section id="video">
+    <div class="sec-head">
+      <div class="tag">Fase 6</div>
+      <h2>Guion del <span class="serif">video</span></h2>
+    </div>
+    <div class="timeline" aria-hidden="true">
+      <div class="y" style="flex:30">0:00</div>
+      <div class="s" style="flex:60">0:30</div>
+      <div class="w" style="flex:30">1:30</div>
+      <div class="y" style="flex:90">2:00</div>
+      <div class="s" style="flex:60">3:30</div>
+      <div class="w" style="flex:30">4:30</div>
+    </div>
+    <ol class="scenes">
+      <li class="scene"><span class="t">0:00</span><p><b>Intro y contexto</b></p><span class="who">todos</span></li>
+      <li class="scene"><span class="t">0:30</span><p><b>Lo que investigamos</b></p><span class="who">integrante 1</span></li>
+      <li class="scene"><span class="t">1:30</span><p><b>Kit y circuito</b></p><span class="who">integrante 2</span></li>
+      <li class="scene"><span class="t">2:00</span><p><b>Las 6 mediciones</b></p><span class="who">integrantes 2 y 3</span></li>
+      <li class="scene"><span class="t">3:30</span><p><b>Curvas y análisis</b></p><span class="who">integrante 3</span></li>
+      <li class="scene"><span class="t">4:30</span><p><b>Energía al año y cierre</b></p><span class="who">integrante 4 y todos</span></li>
+    </ol>
+  </section>
+
+  <!-- LECTURAS -->
+  <section id="lecturas">
+    <div class="sec-head">
+      <div class="tag">Para el día de medir</div>
+      <h2><span class="serif">Lecturas</span></h2>
+    </div>
+    <div class="readings">
+      <div>
+        <div class="tag" id="readTitle" style="margin-bottom:8px">Prueba</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Voltaje (V)</th><th>Corriente (mA)</th><th>Potencia (mW)</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="btns">
+          <button type="button" class="btn" id="addRow">Agregar fila</button>
+          <button type="button" class="btn" id="copyCsv">Copiar para Excel</button>
+          <button type="button" class="btn" id="loadEx">Cargar ejemplo</button>
+          <button type="button" class="btn warn" id="clearRows">Borrar lecturas</button>
+        </div>
+        <textarea id="csvOut" hidden aria-label="Lecturas en formato CSV"></textarea>
+      </div>
+      <div class="panel-card" style="display:grid; gap:12px">
+        <span class="tag">Pregunta 7</span>
+        <h3>Energía al año</h3>
+        <div class="formula">E = Pmáx * HSP * 365 * 0.8</div>
+        <div class="field">
+          <label for="hspR">Horas solar pico <output id="hspO">5.5 h</output></label>
+          <input type="range" id="hspR" min="3" max="7" step="0.1" value="5.5">
+        </div>
+        <div><span class="energy-out" id="eOut">-</span></div>
+        <p class="hand" style="font-size:22px" id="eNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="tag">TE1020.308 / Situación problema / Ago-Dic 2026</span>
+    <span class="hand" style="font-size:22px">nos vemos al sol</span>
+  </footer>
+</main>
+
+<script>
+(function(){
+  // Modelo de un diodo: V(I) = a ln((Iph - I)/I0 + 1) - I Rs
+  const PANELS = { p6:{Vn:6, Isc:0.100, name:'6 V / 100 mA'}, p3:{Vn:3, Isc:0.150, name:'3 V / 150 mA'} };
+  const CFG_NAMES = { uno:'Un panel', par:'Dos paneles en paralelo', serie:'Dos paneles en serie', sombra:'Serie con 30% de sombra en uno' };
+  const state = { cfg:'uno', panel:'p6', sun:0.9, pot:55, hsp:5.5 };
+
+  function params(p){
+    const Voc = p.Vn*1.2, Ns = Math.max(1, Math.round(Voc/0.6));
+    const a = 1.3*Ns*0.025693, I0 = p.Isc/(Math.exp(Voc/a)-1);
+    return { Voc, a, I0, Rs:0.07*Voc/p.Isc, Isc:p.Isc, Rrev:Voc/(0.15*p.Isc) };
+  }
+  function vMod(I, Iph, m){
+    if (I <= Iph) return m.a*Math.log((Iph-I)/m.I0 + 1) - I*m.Rs;
+    return -(I-Iph)*m.Rrev - I*m.Rs;
+  }
+  function vTot(I, cfg, m, G){
+    const Iph = m.Isc*G;
+    if (cfg==='uno') return vMod(I, Iph, m);
+    if (cfg==='par') return vMod(I/2, Iph, m);
+    if (cfg==='serie') return 2*vMod(I, Iph, m);
+    return vMod(I, Iph, m) + vMod(I, Iph*0.7, m);
+  }
+  function bisect(f, lo, hi){ for (let k=0;k<70;k++){ const mid=(lo+hi)/2; if (f(mid)>0) lo=mid; else hi=mid; } return (lo+hi)/2; }
+  function potOhms(s){ return s<=0 ? 0 : Math.pow(10, -1 + 4*s/100); }
+
+  function simulate(){
+    const m = params(PANELS[state.panel]), G = state.sun, cfg = state.cfg;
+    const Imax = (cfg==='par'?2:1)*m.Isc*G;
+    const isc = bisect(I=>vTot(I,cfg,m,G), 0, Imax);
+    const voc = vTot(0,cfg,m,G);
+    const pts = [];
+    const N = 320;
+    for (let k=0;k<=N;k++){ const I = isc*k/N; const V = Math.max(0, vTot(I,cfg,m,G)); pts.push({V, I}); }
+    let mp = {P:0, V:0, I:0};
+    for (const p of pts){ const P = p.V*p.I; if (P>mp.P) mp = {P, V:p.V, I:p.I}; }
+    const R = potOhms(state.pot);
+    const Iop = bisect(I=>vTot(I,cfg,m,G)-I*R, 0, isc);
+    const Vop = Math.max(0, vTot(Iop,cfg,m,G));
+    // resistencias sugeridas: corriente repartida parejo
+    const sugg = [];
+    for (let k=1;k<=11;k++){ const I = isc*k/12; const V = vTot(I,cfg,m,G); if (V>0) sugg.push(V/I); }
+    sugg.reverse();
+    return { m, isc, voc, pts, mp, R, Iop, Vop, sugg };
+  }
+
+  // ---------- lecturas guardadas ----------
+  const STORE = 'paneles-al-sol-lecturas-v1';
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORE) || '{}') || {}; } catch(e){ saved = {}; }
+  function key(){ return state.panel + ':' + state.cfg; }
+  function getRows(){ if (!saved[key()]) saved[key()] = Array.from({length:8}, ()=>({v:'', i:''})); return saved[key()]; }
+  function persist(){ try { localStorage.setItem(STORE, JSON.stringify(saved)); } catch(e){} }
+  function num(s){ const x = parseFloat(String(s).replace(',', '.')); return isFinite(x) ? x : null; }
+  function measured(){ return getRows().map(r=>({V:num(r.v), I:num(r.i)})).filter(p=>p.V!==null && p.I!==null); }
+
+  // ---------- gráfica ----------
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  function niceStep(max, n){ const raw = max/n; const p = Math.pow(10, Math.floor(Math.log10(raw))); const f = raw/p; const s = f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10; return s*p; }
+  function fmt(x, d){ return x.toLocaleString('es-MX', {minimumFractionDigits:d, maximumFractionDigits:d}); }
+
+  function drawPlot(s){
+    const svg = document.getElementById('plot');
+    const W=640, H=380, L=58, Rm=62, T=22, B=48, pw=W-L-Rm, ph=H-T-B;
+    const meas = measured();
+    const vMaxData = Math.max(s.voc, ...meas.map(p=>p.V), 0.1)*1.06;
+    const iMaxData = Math.max(s.isc*1000, ...meas.map(p=>p.I), 1)*1.1;
+    const pMaxData = Math.max(s.mp.P*1000, ...meas.map(p=>p.V*p.I), 1)*1.18;
+    const vs = niceStep(vMaxData,6), is = niceStep(iMaxData,5), ps = niceStep(pMaxData,5);
+    const vMax = Math.ceil(vMaxData/vs)*vs, iMax = Math.ceil(iMaxData/is)*is, pMax = Math.ceil(pMaxData/ps)*ps;
+    const x = v=>L + v/vMax*pw, yI = i=>T + ph - i/iMax*ph, yP = p=>T + ph - p/pMax*ph;
+    let g = '';
+    // rejilla y ejes
+    for (let v=0; v<=vMax+1e-9; v+=vs){ const X=x(v); g += `<line x1="${X}" y1="${T}" x2="${X}" y2="${T+ph}" stroke="#E6E0D2" stroke-width="1"/><text x="${X}" y="${T+ph+18}" text-anchor="middle" font-family="Space Mono, monospace" font-size="11" fill="#5d5a52">${fmt(v, vs<1?1:0)}</text>`; }
+    for (let i=0; i<=iMax+1e-9; i+=is){ const Y=yI(i); g += `<line x1="${L}" y1="${Y}" x2="${L+pw}" y2="${Y}" stroke="#E6E0D2" stroke-width="1"/><text x="${L-8}" y="${Y+4}" text-anchor="end" font-family="Space Mono, monospace" font-size="11" fill="#3D7BFF">${fmt(i,0)}</text>`; }
+    for (let p=0; p<=pMax+1e-9; p+=ps){ const Y=yP(p); g += `<text x="${L+pw+8}" y="${Y+4}" text-anchor="start" font-family="Space Mono, monospace" font-size="11" fill="#E5484D">${fmt(p,0)}</text>`; }
+    g += `<line x1="${L}" y1="${T+ph}" x2="${L+pw}" y2="${T+ph}" stroke="#111111" stroke-width="2"/><line x1="${L}" y1="${T}" x2="${L}" y2="${T+ph}" stroke="#111111" stroke-width="2"/><line x1="${L+pw}" y1="${T}" x2="${L+pw}" y2="${T+ph}" stroke="#111111" stroke-width="1"/>`;
+    g += `<text x="${L+pw/2}" y="${H-8}" text-anchor="middle" font-family="Space Mono, monospace" font-size="12" fill="#111111">Voltaje (V)</text>`;
+    g += `<text transform="translate(16 ${T+ph/2}) rotate(-90)" text-anchor="middle" font-family="Space Mono, monospace" font-size="12" fill="#3D7BFF">Corriente (mA)</text>`;
+    g += `<text transform="translate(${W-10} ${T+ph/2}) rotate(90)" text-anchor="middle" font-family="Space Mono, monospace" font-size="12" fill="#E5484D">Potencia (mW)</text>`;
+    // curvas
+    const pts = s.pts.slice().sort((a,b)=>a.V-b.V);
+    const ivPath = pts.map((p,k)=>(k?'L':'M')+x(p.V).toFixed(1)+' '+yI(p.I*1000).toFixed(1)).join(' ');
+    const area = `M${x(0)} ${yI(0)} ` + pts.map(p=>'L'+x(p.V).toFixed(1)+' '+yI(p.I*1000).toFixed(1)).join(' ') + ` L${x(pts[pts.length-1].V)} ${yI(0)} Z`;
+    const pvPath = pts.map((p,k)=>(k?'L':'M')+x(p.V).toFixed(1)+' '+yP(p.V*p.I*1000).toFixed(1)).join(' ');
+    g += `<path d="${area}" fill="#BFE3FF" fill-opacity=".45" stroke="none"/>`;
+    g += `<path d="${pvPath}" fill="none" stroke="#E5484D" stroke-width="2.5" stroke-dasharray="7 5"/>`;
+    g += `<path d="${ivPath}" fill="none" stroke="#3D7BFF" stroke-width="3.2" stroke-linejoin="round"/>`;
+    // punto de máxima potencia
+    const mx = x(s.mp.V), myI = yI(s.mp.I*1000), myP = yP(s.mp.P*1000);
+    g += `<line x1="${mx}" y1="${myP}" x2="${mx}" y2="${T+ph}" stroke="#E5484D" stroke-width="1.2" stroke-dasharray="3 3"/>`;
+    g += `<circle cx="${mx}" cy="${myP}" r="6" fill="#E5484D" stroke="#111111" stroke-width="1.5"/>`;
+    g += `<circle cx="${mx}" cy="${myI}" r="5" fill="#FFFDF8" stroke="#E5484D" stroke-width="2.5"/>`;
+    const lblLeft = mx > L + pw*0.62;
+    g += `<text x="${mx + (lblLeft?-10:10)}" y="${myP-10}" text-anchor="${lblLeft?'end':'start'}" font-family="Caveat, cursive" font-weight="700" font-size="22" fill="#E5484D">Pmáx ${fmt(s.mp.P*1000,0)} mW</text>`;
+    // lecturas medidas
+    for (const p of meas){ if (p.V<=vMax && p.I<=iMax) g += `<circle cx="${x(p.V)}" cy="${yI(p.I)}" r="4.5" fill="#FFFDF8" stroke="#111111" stroke-width="2"/>`; }
+    // punto de operación
+    const ox = x(s.Vop), oy = yI(s.Iop*1000);
+    g += `<line x1="${L}" y1="${oy}" x2="${ox}" y2="${oy}" stroke="#111111" stroke-width="1" stroke-dasharray="2 4"/><line x1="${ox}" y1="${oy}" x2="${ox}" y2="${T+ph}" stroke="#111111" stroke-width="1" stroke-dasharray="2 4"/>`;
+    g += `<circle cx="${ox}" cy="${oy}" r="9" fill="#FFE45E" stroke="#111111" stroke-width="2.5"/>`;
+    g += `<text x="${Math.min(ox+14, L+pw-4)}" y="${Math.max(oy-14, T+14)}" text-anchor="${ox+14 > L+pw-120 ? 'end':'start'}" font-family="Caveat, cursive" font-weight="700" font-size="20" fill="#111111">aquí está el pot</text>`;
+    svg.innerHTML = g;
+  }
+
+  // ---------- diagrama ----------
+  function panelSVG(x, y, w, h, shade){
+    let s = `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#BFE3FF" stroke="#111111" stroke-width="2.5"/>`;
+    const cols = 3, rows = Math.max(2, Math.round(h/24));
+    for (let c=1;c<cols;c++){ const X = x + w*c/cols; s += `<line x1="${X}" y1="${y}" x2="${X}" y2="${y+h}" stroke="#3D7BFF" stroke-width="1.5"/>`; }
+    for (let r=1;r<rows;r++){ const Y = y + h*r/rows; s += `<line x1="${x}" y1="${Y}" x2="${x+w}" y2="${Y}" stroke="#3D7BFF" stroke-width="1.5"/>`; }
+    if (shade){ const sw = w*0.3; s += `<rect x="${x}" y="${y}" width="${sw}" height="${h}" fill="#111111" fill-opacity=".78"/>`; s += `<text x="${x+w+8}" y="${y+h/2+6}" font-family="Caveat, cursive" font-weight="700" font-size="20" fill="#E5484D">30%</text>`; }
+    return s;
+  }
+  function drawDiagram(cfg){
+    const W='stroke="#111111" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+    const lab = (x,y,t,anchor='middle',col='#111111')=>`<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="Space Mono, monospace" font-size="13" font-weight="700" fill="${col}">${t}</text>`;
+    let s = '', topX = 85, botX = 85;
+    if (cfg==='uno'){
+      s += panelSVG(40, 82, 90, 96, false);
+      s += `<path d="M85 82V40" ${W}/><path d="M85 178V220" ${W}/>`;
+      s += lab(70, 74, '+', 'end') + lab(70, 196, '-', 'end');
+    } else if (cfg==='serie' || cfg==='sombra'){
+      s += panelSVG(40, 54, 90, 62, false);
+      s += panelSVG(40, 146, 90, 62, cfg==='sombra');
+      s += `<path d="M85 54V40" ${W}/><path d="M85 116V146" ${W}/><path d="M85 208V220" ${W}/>`;
+      s += lab(70, 52, '+', 'end') + lab(70, 230, '-', 'end');
+    } else {
+      s += panelSVG(22, 82, 62, 96, false);
+      s += panelSVG(104, 82, 62, 96, false);
+      s += `<path d="M53 82V40H135V82" ${W}/><path d="M53 178V220H135V178" ${W}/>`;
+      topX = 135; botX = 135;
+      s += lab(36, 74, '+', 'end') + lab(36, 196, '-', 'end');
+    }
+    // cables principales
+    s += `<path d="M${topX} 40H272" ${W}/><path d="M308 40H420V88" ${W}/><path d="M420 172V220H${botX}" ${W}/>`;
+    // amperímetro (en serie)
+    s += `<circle cx="290" cy="40" r="18" fill="#FFE45E" stroke="#111111" stroke-width="2.5"/>` + lab(290, 45, 'A');
+    // voltímetro (en paralelo con el panel)
+    s += `<path d="M220 40V112" ${W}/><path d="M220 148V220" ${W}/><circle cx="220" cy="130" r="18" fill="#FFE45E" stroke="#111111" stroke-width="2.5"/>` + lab(220, 135, 'V');
+    s += `<circle cx="220" cy="40" r="4" fill="#111111"/><circle cx="220" cy="220" r="4" fill="#111111"/>`;
+    // potenciómetro
+    s += `<path d="M420 88l-12 7 24 10-24 10 24 10-24 10 24 10-24 10 12 7" ${W}/>`;
+    s += `<path d="M396 168L446 92" ${W}/><path d="M446 92l-12 3M446 92l-2 12" ${W}/>`;
+    s += lab(456, 136, '0 a 1 kΩ', 'start');
+    // anotaciones a mano
+    s += `<text x="290" y="84" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="19" fill="#3D7BFF">en serie</text>`;
+    s += `<text x="252" y="186" font-family="Caveat, cursive" font-weight="700" font-size="19" fill="#3D7BFF">en paralelo</text>`;
+    document.getElementById('diagram').innerHTML = s;
+  }
+
+  // ---------- tabla ----------
+  const tbody = document.getElementById('rows');
+  function drawRows(){
+    const rows = getRows();
+    tbody.innerHTML = rows.map((r,k)=>{
+      const v = num(r.v), i = num(r.i);
+      const p = (v!==null && i!==null) ? fmt(v*i,1) : '';
+      return `<tr><td class="num">${k+1}</td><td><input id="rv-${k}" inputmode="decimal" aria-label="Voltaje lectura ${k+1}" value="${r.v}"></td><td><input id="ri-${k}" inputmode="decimal" aria-label="Corriente lectura ${k+1}" value="${r.i}"></td><td class="num" id="rp-${k}">${p}</td></tr>`;
+    }).join('');
+    document.getElementById('readTitle').textContent = CFG_NAMES[state.cfg] + ', panel ' + PANELS[state.panel].name;
+  }
+  tbody.addEventListener('input', e=>{
+    const t = e.target; if (!t.id) return;
+    const [kind, idx] = t.id.split('-'); const k = +idx; const rows = getRows();
+    if (kind==='rv') rows[k].v = t.value; else if (kind==='ri') rows[k].i = t.value;
+    const v = num(rows[k].v), i = num(rows[k].i);
+    document.getElementById('rp-'+k).textContent = (v!==null && i!==null) ? fmt(v*i,1) : '';
+    persist(); renderSim();
+  });
+  document.getElementById('addRow').addEventListener('click', ()=>{ getRows().push({v:'', i:''}); persist(); drawRows(); });
+  document.getElementById('loadEx').addEventListener('click', ()=>{
+    // lecturas de ejemplo generadas con la simulación al 80% de sol y un poco de ruido
+    const keep = state.sun; state.sun = 0.8; const s = simulate(); state.sun = keep;
+    const rows = [];
+    for (let k=0;k<=10;k++){ const I = s.isc*(1 - k/10); const V = Math.max(0, vTot(I, state.cfg, s.m, 0.8)); const n = 1 + (Math.sin(k*7.3)*0.03); rows.push({v: fmt(V*n,2).replace(',', ''), i: fmt(I*1000*(2-n),1).replace(',', '')}); }
+    saved[key()] = rows; persist(); drawRows(); renderSim();
+  });
+  const clearBtn = document.getElementById('clearRows'); let armed = false, armTimer;
+  clearBtn.addEventListener('click', ()=>{
+    if (!armed){ armed = true; clearBtn.classList.add('armed'); clearBtn.textContent = 'Da clic otra vez para borrar'; armTimer = setTimeout(()=>{ armed=false; clearBtn.classList.remove('armed'); clearBtn.textContent='Borrar lecturas'; }, 3500); return; }
+    clearTimeout(armTimer); armed = false; clearBtn.classList.remove('armed'); clearBtn.textContent = 'Borrar lecturas';
+    saved[key()] = Array.from({length:8}, ()=>({v:'', i:''})); persist(); drawRows(); renderSim();
+  });
+  document.getElementById('copyCsv').addEventListener('click', ()=>{
+    const lines = ['Voltaje (V)\tCorriente (mA)\tPotencia (mW)'];
+    for (const p of measured()) lines.push([p.V, p.I, +(p.V*p.I).toFixed(2)].join('\t'));
+    const txt = lines.join('\n'); const out = document.getElementById('csvOut'); const btn = document.getElementById('copyCsv');
+    const fallback = ()=>{ out.hidden = false; out.value = txt; out.focus(); out.select(); btn.textContent = 'Cópialo con Ctrl+C'; };
+    try {
+      navigator.clipboard.writeText(txt).then(()=>{ btn.textContent = 'Copiado, pégalo en Excel'; setTimeout(()=>btn.textContent='Copiar para Excel', 2500); }, fallback);
+    } catch(e){ fallback(); }
+  });
+
+  // ---------- render ----------
+  function renderSim(){
+    const s = simulate();
+    drawPlot(s);
+    document.getElementById('kvIsc').textContent = fmt(s.isc*1000,0) + ' mA';
+    document.getElementById('kvVoc').textContent = fmt(s.voc,2) + ' V';
+    document.getElementById('kvPmp').textContent = fmt(s.mp.P*1000,0) + ' mW';
+    document.getElementById('kvRmp').textContent = fmt(s.mp.V/s.mp.I,0) + ' Ω';
+    const R = s.R;
+    document.getElementById('potO').textContent = R<10 ? fmt(R,1)+' Ω' : fmt(R,0)+' Ω';
+    document.getElementById('mV').textContent = fmt(s.Vop,2) + ' V';
+    document.getElementById('mI').textContent = fmt(s.Iop*1000,1) + ' mA';
+    document.getElementById('mP').textContent = fmt(s.Vop*s.Iop*1000,0) + ' mW';
+    document.getElementById('mR').textContent = R<10 ? fmt(R,1)+' Ω' : fmt(R,0)+' Ω';
+    const pct = Math.round(state.sun*100), r60 = document.getElementById('rule60');
+    r60.className = 'rule60 ' + (pct>=60 ? 'ok':'bad');
+    r60.textContent = pct>=60 ? `Sol al ${pct}%, sí pasa la regla del 60%` : `Sol al ${pct}%, no pasa la regla del 60%`;
+    document.getElementById('rchips').innerHTML = s.sugg.map(r=>`<span>${r<10?fmt(r,1):fmt(r,0)} Ω</span>`).join('') + `<span style="background:var(--yellow)">Pmáx en ${fmt(s.mp.V/s.mp.I,0)} Ω</span>`;
+    // energía al año, con Pmáx de la prueba (a sol completo la Pmáx nominal se escala con el sol que haya)
+    const sFull = (function(){ const k = state.sun; state.sun = 1; const r = simulate(); state.sun = k; return r; })();
+    const E = sFull.mp.P * state.hsp * 365 * 0.8; // Wh
+    document.getElementById('eOut').textContent = E>=1000 ? fmt(E/1000,2)+' kWh al año' : fmt(E,0)+' Wh al año';
+    document.getElementById('eNote').textContent = `como un foco LED de 9 W prendido ${fmt(E/9,0)} horas`;
+  }
+  function setCfg(cfg){
+    state.cfg = cfg;
+    document.querySelectorAll('#cfgSeg button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.cfg===cfg ? 'true':'false'));
+    drawDiagram(cfg); drawRows(); renderSim();
+  }
+  document.getElementById('cfgSeg').addEventListener('click', e=>{ const b = e.target.closest('button'); if (b) setCfg(b.dataset.cfg); });
+  document.getElementById('panelSel').addEventListener('change', e=>{ state.panel = e.target.value; drawRows(); renderSim(); });
+  document.getElementById('sunR').addEventListener('input', e=>{ state.sun = e.target.value/100; document.getElementById('sunO').textContent = e.target.value + '%'; renderSim(); });
+  document.getElementById('potR').addEventListener('input', e=>{ state.pot = +e.target.value; renderSim(); });
+  document.getElementById('hspR').addEventListener('input', e=>{ state.hsp = +e.target.value; document.getElementById('hspO').textContent = fmt(state.hsp,1) + ' h'; renderSim(); });
+
+  window.PV = { params, vTot, bisect, potOhms, PANELS };
+  setCfg('uno');
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+  const stage = document.getElementById('stage3d');
+  const msg = document.getElementById('msg3');
+  const PV = window.PV;
+  if (!window.THREE || !PV){ msg.hidden = false; return; }
+  const T = THREE;
+  let renderer;
+  try { renderer = new T.WebGLRenderer({antialias:true, alpha:true}); }
+  catch(e){ msg.hidden = false; return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = T.PCFSoftShadowMap;
+  renderer.domElement.setAttribute('aria-hidden', 'true');
+  stage.prepend(renderer.domElement);
+
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fmt = (x,d)=>x.toLocaleString('es-MX', {minimumFractionDigits:d, maximumFractionDigits:d});
+  const RED = 0xE5484D, BLACK = 0x1b1b1b, BLUE = 0x3D7BFF, YELLOW = 0xFFE45E;
+
+  const scene = new T.Scene();
+  const camera = new T.PerspectiveCamera(50, 2, 0.1, 120);
+  const target = new T.Vector3(0, 2.0, -0.4);
+  const baseOffset = new T.Vector3(0.4, 5.6, 9.8);
+  camera.position.copy(target).add(baseOffset);
+  camera.lookAt(target);
+  let controls = null;
+  if (T.OrbitControls){
+    controls = new T.OrbitControls(camera, renderer.domElement);
+    controls.target.copy(target);
+    controls.enableDamping = true; controls.dampingFactor = 0.08;
+    controls.enablePan = false; controls.minDistance = 7; controls.maxDistance = 26;
+    controls.maxPolarAngle = 1.38;
+    controls.update();
+  }
+
+  // ---------- luces ----------
+  scene.add(new T.HemisphereLight(0xFFFDF8, 0x2E7A53, 0.62));
+  const sunLight = new T.DirectionalLight(0xFFF3CF, 0.95);
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.set(2048, 2048);
+  const sc = sunLight.shadow.camera; sc.left = -10; sc.right = 10; sc.top = 10; sc.bottom = -10; sc.near = 0.5; sc.far = 50;
+  sunLight.shadow.bias = -0.0006; sunLight.shadow.normalBias = 0.02;
+  scene.add(sunLight); scene.add(sunLight.target);
+
+  // ---------- texturas hechas en canvas ----------
+  function canvasTex(w, h, draw){
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const g = c.getContext('2d'); draw(g, w, h);
+    const t = new T.CanvasTexture(c); t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    return { tex:t, g, c };
+  }
+  const matTex = canvasTex(1024, 704, (g,w,h)=>{
+    g.fillStyle = '#2E7A53'; g.fillRect(0,0,w,h);
+    for (let k=0, x=0; x<=w; x+=32, k++){ g.strokeStyle = k%5===0 ? 'rgba(255,255,255,.34)' : 'rgba(255,255,255,.14)'; g.lineWidth = k%5===0 ? 2 : 1; g.beginPath(); g.moveTo(x,0); g.lineTo(x,h); g.stroke(); }
+    for (let k=0, y=0; y<=h; y+=32, k++){ g.strokeStyle = k%5===0 ? 'rgba(255,255,255,.34)' : 'rgba(255,255,255,.14)'; g.lineWidth = k%5===0 ? 2 : 1; g.beginPath(); g.moveTo(0,y); g.lineTo(w,y); g.stroke(); }
+  });
+  const cellTex = canvasTex(512, 348, (g,w,h)=>{
+    g.fillStyle = '#16224a'; g.fillRect(0,0,w,h);
+    const cols = 6, rows = 4, pad = 12, gap = 6;
+    const cw = (w-2*pad-(cols-1)*gap)/cols, ch = (h-2*pad-(rows-1)*gap)/rows;
+    for (let r=0;r<rows;r++) for (let c=0;c<cols;c++){
+      const x = pad + c*(cw+gap), y = pad + r*(ch+gap);
+      const grd = g.createLinearGradient(x,y,x+cw,y+ch); grd.addColorStop(0,'#3155b0'); grd.addColorStop(1,'#1b2f6e');
+      g.fillStyle = grd; g.fillRect(x,y,cw,ch);
+      g.strokeStyle = 'rgba(205,220,255,.5)'; g.lineWidth = 1.5;
+      for (let k=1;k<4;k++){ g.beginPath(); g.moveTo(x+cw*k/4, y); g.lineTo(x+cw*k/4, y+ch); g.stroke(); }
+    }
+  });
+
+  // ---------- tapete ----------
+  const mat = new T.Mesh(new T.PlaneGeometry(16, 11), new T.MeshStandardMaterial({map:matTex.tex, roughness:0.92}));
+  mat.rotation.x = -Math.PI/2; mat.position.set(0, 0, 0.5); mat.receiveShadow = true; scene.add(mat);
+  const slab = new T.Mesh(new T.BoxGeometry(16, 0.14, 11), new T.MeshStandardMaterial({color:0x245f41, roughness:0.9}));
+  slab.position.set(0, -0.071, 0.5); scene.add(slab);
+
+  // ---------- paneles ----------
+  const metal = new T.MeshStandardMaterial({color:0xc9ccd1, metalness:0.55, roughness:0.35});
+  const dark = new T.MeshStandardMaterial({color:0x2a2a2a, roughness:0.6});
+  function makePanel(x, z){
+    const root = new T.Group(); root.position.set(x, 0, z); scene.add(root);
+    const base = new T.Mesh(new T.CylinderGeometry(0.5, 0.56, 0.1, 28), dark); base.position.y = 0.05; base.castShadow = true; base.receiveShadow = true; root.add(base);
+    const post = new T.Mesh(new T.CylinderGeometry(0.07, 0.07, 1.45, 12), metal); post.position.y = 0.78; post.castShadow = true; root.add(post);
+    const box = new T.Mesh(new T.BoxGeometry(0.6, 0.26, 0.34), dark); box.position.set(0, 0.23, 0.42); box.castShadow = true; root.add(box);
+    const tP = new T.Mesh(new T.SphereGeometry(0.075, 12, 8), new T.MeshStandardMaterial({color:RED})); tP.position.set(0.17, 0.4, 0.5); root.add(tP);
+    const tM = new T.Mesh(new T.SphereGeometry(0.075, 12, 8), new T.MeshStandardMaterial({color:BLACK})); tM.position.set(-0.17, 0.4, 0.5); root.add(tM);
+    const pivot = new T.Group(); pivot.position.set(0, 1.55, 0); root.add(pivot);
+    const frame = new T.Mesh(new T.BoxGeometry(2.8, 0.1, 1.9), metal); frame.castShadow = true; frame.receiveShadow = true; pivot.add(frame);
+    const face = new T.Mesh(new T.PlaneGeometry(2.62, 1.74), new T.MeshStandardMaterial({map:cellTex.tex, metalness:0.25, roughness:0.32}));
+    face.rotation.x = -Math.PI/2; face.position.y = 0.053; face.receiveShadow = true; pivot.add(face);
+    const stick = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 0.75, 10), new T.MeshStandardMaterial({color:YELLOW, roughness:0.5}));
+    stick.position.set(0.85, 0.43, 0.45); stick.castShadow = true; pivot.add(stick);
+    const shade = new T.Mesh(new T.BoxGeometry(0.84, 0.025, 1.9), new T.MeshStandardMaterial({color:0x111111, roughness:0.95}));
+    shade.position.set(-0.98, 0.075, 0); shade.castShadow = true; shade.visible = false; pivot.add(shade);
+    return { root, pivot, shade, plus:new T.Vector3(x+0.17, 0.4, z+0.5), minus:new T.Vector3(x-0.17, 0.4, z+0.5) };
+  }
+  const A = makePanel(-4.4, -1.7);
+  const B = makePanel(-0.9, -1.7);
+
+  // ---------- multímetros ----------
+  function lcdDraw(g, w, h, value, unit, mode){
+    g.fillStyle = '#111111'; g.fillRect(0,0,w,h);
+    g.fillStyle = '#c8d2ad'; g.fillRect(10,10,w-20,h-20);
+    g.fillStyle = '#3c4430'; g.font = '700 30px "Space Mono", monospace'; g.textAlign = 'left'; g.textBaseline = 'top'; g.fillText(mode, 26, 22);
+    g.fillStyle = '#111111'; g.textAlign = 'right'; g.textBaseline = 'alphabetic';
+    g.font = '700 118px "Space Mono", monospace'; g.fillText(value, w-112, h-38);
+    g.font = '700 46px "Space Mono", monospace'; g.fillText(unit, w-26, h-40);
+  }
+  function makeMeter(x, z, mode, unit){
+    const g = new T.Group(); g.position.set(x, 0.66, z); g.rotation.x = 0.45; scene.add(g);
+    const body = new T.Mesh(new T.BoxGeometry(1.9, 0.32, 2.6), new T.MeshStandardMaterial({color:YELLOW, roughness:0.55})); body.castShadow = true; g.add(body);
+    const top = new T.Mesh(new T.BoxGeometry(1.66, 0.04, 2.34), new T.MeshStandardMaterial({color:0x1d1d1d, roughness:0.7})); top.position.y = 0.17; g.add(top);
+    const lcd = canvasTex(512, 230, (gg,w,h)=>lcdDraw(gg,w,h,'0.00',unit,mode));
+    const screen = new T.Mesh(new T.PlaneGeometry(1.5, 0.67), new T.MeshBasicMaterial({map:lcd.tex}));
+    screen.rotation.x = -Math.PI/2; screen.position.set(0, 0.195, -0.66); g.add(screen);
+    const dial = new T.Mesh(new T.CylinderGeometry(0.36, 0.36, 0.08, 28), new T.MeshStandardMaterial({color:0x3a3a3a, roughness:0.5})); dial.position.set(0, 0.22, 0.25); g.add(dial);
+    const ptr = new T.Mesh(new T.BoxGeometry(0.06, 0.03, 0.32), new T.MeshStandardMaterial({color:0xFFFDF8})); ptr.position.set(0, 0.27, 0.15); g.add(ptr);
+    const jR = new T.Mesh(new T.CylinderGeometry(0.08, 0.08, 0.06, 14), new T.MeshStandardMaterial({color:RED})); jR.position.set(0.38, 0.2, 0.95); g.add(jR);
+    const jC = new T.Mesh(new T.CylinderGeometry(0.08, 0.08, 0.06, 14), new T.MeshStandardMaterial({color:BLACK})); jC.position.set(-0.38, 0.2, 0.95); g.add(jC);
+    g.updateMatrixWorld(true);
+    return { g, lcd, mode, unit, last:'', red:g.localToWorld(new T.Vector3(0.38, 0.22, 0.95)), com:g.localToWorld(new T.Vector3(-0.38, 0.22, 0.95)) };
+  }
+  const volt = makeMeter(-2.7, 2.5, 'DC V', 'V');
+  const amm = makeMeter(1.3, 2.5, 'DC mA', 'mA');
+  function setLcd(m, value){
+    if (m.last === value) return; m.last = value;
+    lcdDraw(m.lcd.g, m.lcd.c.width, m.lcd.c.height, value, m.unit, m.mode); m.lcd.tex.needsUpdate = true;
+  }
+
+  // ---------- potenciómetro ----------
+  const potMat = new T.MeshStandardMaterial({color:0x2a2a2a, roughness:0.6, emissive:new T.Color(RED), emissiveIntensity:0});
+  const potG = new T.Group(); potG.position.set(4.7, 0, 0.5); scene.add(potG);
+  const potBase = new T.Mesh(new T.BoxGeometry(1.2, 0.34, 0.95), potMat); potBase.position.y = 0.17; potBase.castShadow = true; potG.add(potBase);
+  const knob = new T.Group(); knob.position.y = 0.34; potG.add(knob);
+  const knobBody = new T.Mesh(new T.CylinderGeometry(0.38, 0.42, 0.34, 32), new T.MeshStandardMaterial({color:0x151515, roughness:0.45})); knobBody.position.y = 0.17; knobBody.castShadow = true; knob.add(knobBody);
+  const knobMark = new T.Mesh(new T.BoxGeometry(0.07, 0.03, 0.3), new T.MeshStandardMaterial({color:YELLOW})); knobMark.position.set(0, 0.35, -0.18); knob.add(knobMark);
+  const potT1 = new T.Vector3(4.7-0.36, 0.2, 0.5+0.5), potT2 = new T.Vector3(4.7+0.36, 0.2, 0.5+0.5);
+  [potT1, potT2].forEach(p=>{ const s = new T.Mesh(new T.SphereGeometry(0.07, 12, 8), metal); s.position.copy(p); scene.add(s); });
+
+  // ---------- sol ----------
+  const sun = new T.Mesh(new T.SphereGeometry(0.72, 32, 16), new T.MeshBasicMaterial({color:YELLOW})); scene.add(sun);
+  const glowTex = canvasTex(256, 256, (g,w,h)=>{ const r = g.createRadialGradient(128,128,10,128,128,128); r.addColorStop(0,'rgba(255,228,94,.95)'); r.addColorStop(.35,'rgba(255,228,94,.45)'); r.addColorStop(1,'rgba(255,228,94,0)'); g.fillStyle = r; g.fillRect(0,0,w,h); });
+  const glow = new T.Sprite(new T.SpriteMaterial({map:glowTex.tex, transparent:true, depthWrite:false, blending:T.AdditiveBlending}));
+  glow.scale.set(5, 5, 1); scene.add(glow);
+  const rayGeo = new T.BufferGeometry().setFromPoints([new T.Vector3(), new T.Vector3()]);
+  const ray = new T.Line(rayGeo, new T.LineDashedMaterial({color:RED, dashSize:0.35, gapSize:0.22, transparent:true, opacity:0.8}));
+  scene.add(ray);
+
+  // ---------- etiquetas tipo sticker ----------
+  const labels = [];
+  function label(text, pos, color){
+    const c = document.createElement('canvas'); c.width = 512; c.height = 128;
+    const tex = new T.CanvasTexture(c);
+    const sp = new T.Sprite(new T.SpriteMaterial({map:tex, transparent:true, depthTest:false}));
+    sp.scale.set(3.1, 0.775, 1); sp.position.copy(pos); sp.renderOrder = 10; scene.add(sp);
+    const L = { c, tex, text, color:color || '#111111', sp };
+    drawLabel(L); labels.push(L); return sp;
+  }
+  function drawLabel(L){
+    const g = L.c.getContext('2d'); g.clearRect(0,0,512,128);
+    g.font = '700 76px Caveat, "Segoe Print", cursive'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.lineJoin = 'round'; g.lineWidth = 18; g.strokeStyle = '#FFFDF8'; g.strokeText(L.text, 256, 66);
+    g.fillStyle = L.color; g.fillText(L.text, 256, 66); L.tex.needsUpdate = true;
+  }
+  const lblA = label('panel A', new T.Vector3(-4.4, 3.25, -1.7));
+  const lblB = label('panel B', new T.Vector3(-0.9, 3.25, -1.7));
+  const lblShade = label('30% de sombra', new T.Vector3(-0.9, 2.75, -0.6), '#E5484D');
+  label('voltímetro', new T.Vector3(-2.7, 2.05, 2.0));
+  label('amperímetro', new T.Vector3(1.3, 2.05, 2.0));
+  label('potenciómetro', new T.Vector3(4.7, 1.55, 0.5));
+  if (document.fonts && document.fonts.load){
+    Promise.all([document.fonts.load('700 76px Caveat'), document.fonts.load('700 118px "Space Mono"')])
+      .then(()=>{ labels.forEach(drawLabel); volt.last = ''; amm.last = ''; }).catch(()=>{});
+  }
+
+  // ---------- cables con corriente ----------
+  const wireGroup = new T.Group(); scene.add(wireGroup);
+  const dotGeo = new T.SphereGeometry(0.08, 10, 8);
+  const dotMat = new T.MeshBasicMaterial({color:YELLOW});
+  let wires = [];
+  function makeWire(a, b, color, lift, kind, radius){
+    const p = (t, y)=>new T.Vector3().lerpVectors(a, b, t).setY(y);
+    const curve = new T.CatmullRomCurve3([a.clone(), p(0.12, 0.08), p(0.5, 0.08 + lift), p(0.88, 0.08), b.clone()]);
+    const mesh = new T.Mesh(new T.TubeGeometry(curve, 72, radius || 0.05, 8, false), new T.MeshStandardMaterial({color, roughness:0.5}));
+    mesh.castShadow = true; wireGroup.add(mesh);
+    const len = curve.getLength(), n = Math.max(3, Math.round(len*1.7));
+    const dots = [];
+    if (kind !== 'none') for (let k=0;k<n;k++){ const d = new T.Mesh(dotGeo, dotMat); d.visible = false; wireGroup.add(d); dots.push(d); }
+    wires.push({ curve, len, dots, kind, phase:Math.random() });
+  }
+  function buildWires(cfg){
+    wireGroup.children.slice().forEach(o=>{ wireGroup.remove(o); if (o.geometry !== dotGeo) o.geometry.dispose(); if (o.material !== dotMat) o.material.dispose(); });
+    wires = [];
+    let sp, sm;
+    if (cfg === 'uno'){ sp = A.plus; sm = A.minus; }
+    else if (cfg === 'par'){ sp = B.plus; sm = B.minus; makeWire(A.plus, B.plus, RED, 0.45, 'half'); makeWire(B.minus, A.minus, BLACK, 0.25, 'half'); }
+    else { sp = A.plus; sm = B.minus; makeWire(B.plus, A.minus, BLUE, 0.4, 'full'); }
+    makeWire(sp, amm.red, RED, 0.3, 'full');
+    makeWire(amm.com, potT1, RED, 0.25, 'full');
+    makeWire(potT2, sm, BLACK, 0.2, 'full');
+    makeWire(sp, volt.red, RED, 0.55, 'none', 0.035);
+    makeWire(sm, volt.com, BLACK, 0.4, 'none', 0.035);
+  }
+
+  // ---------- estado y física ----------
+  const st = { cfg:'uno', hour:11.5, aim:false, pot:71, playing:false };
+  const model = PV.params(PV.PANELS.p6);
+  const UP = new T.Vector3(0, 1, 0);
+  const fixedN = new T.Vector3(0, Math.cos(0.35), -Math.sin(0.35)).normalize();
+  const sunPos = new T.Vector3(), pivotW = new T.Vector3(), sDir = new T.Vector3(), nNow = new T.Vector3(), nT = new T.Vector3();
+  const qT = new T.Quaternion();
+  function sunAt(h, out){ const t = Math.PI*(h-7)/12; return out.set(7.6*Math.cos(t), 1.8 + 4.8*Math.sin(t), -3.4); }
+  function operate(cfg, G, R){
+    if (G <= 0.002) return { V:0, I:0 };
+    const Imax = (cfg === 'par' ? 2 : 1)*model.Isc*G;
+    const isc = PV.bisect(I=>PV.vTot(I, cfg, model, G), 0, Imax);
+    const I = PV.bisect(I=>PV.vTot(I, cfg, model, G) - I*R, 0, isc);
+    return { V:Math.max(0, PV.vTot(I, cfg, model, G)), I };
+  }
+  function hhmm(h){ const H = Math.floor(h), M = Math.floor((h-H)*60); return H + ':' + String(M).padStart(2,'0'); }
+
+  function setCfg3(cfg){
+    st.cfg = cfg;
+    document.querySelectorAll('#cfg3Seg button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.cfg === cfg ? 'true' : 'false'));
+    const two = cfg !== 'uno';
+    B.root.visible = two; lblB.visible = two;
+    B.shade.visible = cfg === 'sombra'; lblShade.visible = cfg === 'sombra';
+    buildWires(cfg);
+  }
+
+  const el = id=>document.getElementById(id);
+  const hourR = el('hour3'), playB = el('play3'), potR = el('pot3'), aimC = el('aim3');
+  function syncHourUI(){ el('hour3O').textContent = hhmm(st.hour); el('clk3').textContent = hhmm(st.hour); hourR.value = st.hour; }
+  function syncPotUI(){ const R = PV.potOhms(st.pot); el('pot3O').textContent = R < 10 ? fmt(R,1) + ' Ω' : fmt(R,0) + ' Ω'; }
+  el('cfg3Seg').addEventListener('click', e=>{ const b = e.target.closest('button'); if (b){ setCfg3(b.dataset.cfg); kick(); } });
+  hourR.addEventListener('input', ()=>{ st.hour = +hourR.value; st.playing = false; playB.textContent = 'Ver el día'; syncHourUI(); kick(); });
+  potR.addEventListener('input', ()=>{ st.pot = +potR.value; syncPotUI(); kick(); });
+  aimC.addEventListener('change', ()=>{ st.aim = aimC.checked; kick(); });
+  playB.addEventListener('click', ()=>{
+    if (st.playing){ st.playing = false; playB.textContent = 'Ver el día'; return; }
+    if (st.hour >= 18.9) st.hour = 7;
+    st.playing = true; playB.textContent = 'Pausa'; kick();
+  });
+
+  let lastShown = '';
+  function update(dt){
+    if (st.playing){
+      st.hour = Math.min(19, st.hour + dt*1.15);
+      if (st.hour >= 19){ st.playing = false; playB.textContent = 'Ver el día'; }
+      syncHourUI();
+    }
+    sunAt(st.hour, sunPos);
+    sun.position.copy(sunPos); glow.position.copy(sunPos);
+    sunLight.position.copy(sunPos).multiplyScalar(1.6); sunLight.target.position.set(0, 0, 0);
+    sunLight.intensity = 0.35 + 0.7*Math.max(0, Math.sin(Math.PI*(st.hour-7)/12));
+
+    A.pivot.getWorldPosition(pivotW);
+    sDir.copy(sunPos).sub(pivotW).normalize();
+    if (st.aim){
+      nT.copy(sDir);
+      const minY = Math.cos(1.31);
+      if (nT.y < minY){ const hl = Math.hypot(nT.x, nT.z) || 1; const k = Math.sin(1.31)/hl; nT.set(nT.x*k, minY, nT.z*k); }
+    } else nT.copy(fixedN);
+    qT.setFromUnitVectors(UP, nT);
+    const f = 1 - Math.exp(-dt*3.2);
+    A.pivot.quaternion.slerp(qT, f); B.pivot.quaternion.copy(A.pivot.quaternion);
+
+    nNow.copy(UP).applyQuaternion(A.pivot.quaternion);
+    const cosI = nNow.dot(sDir);
+    const sky = sDir.y > 0 ? Math.pow(sDir.y, 0.3) : 0;
+    const G = Math.max(0, cosI)*sky;
+    const angle = Math.acos(Math.max(-1, Math.min(1, cosI)))*180/Math.PI;
+
+    const R = PV.potOhms(st.pot);
+    const op = operate(st.cfg, G, R);
+    const P = op.V*op.I;
+
+    const rp = rayGeo.attributes.position; rp.setXYZ(0, sunPos.x, sunPos.y, sunPos.z); rp.setXYZ(1, pivotW.x, pivotW.y, pivotW.z); rp.needsUpdate = true; ray.computeLineDistances();
+    knob.rotation.y = 2.35 - st.pot/100*4.7;
+    potMat.emissiveIntensity = Math.max(0, Math.min(0.85, (P-0.45)/0.6));
+
+    setLcd(volt, op.V < 10 ? fmt(op.V, 2) : fmt(op.V, 1));
+    setLcd(amm, op.I*1000 < 100 ? fmt(op.I*1000, 1) : fmt(op.I*1000, 0));
+
+    const speed = reduce ? 0 : 1;
+    for (const w of wires){
+      if (!w.dots.length) continue;
+      const Iw = w.kind === 'full' ? op.I : op.I/2;
+      const show = Iw > 0.0005;
+      w.phase = (w.phase + speed*Iw*30*dt/w.len) % 1;
+      for (let k=0;k<w.dots.length;k++){
+        const d = w.dots[k]; d.visible = show;
+        if (show) w.curve.getPointAt((k/w.dots.length + w.phase) % 1, d.position);
+      }
+    }
+
+    const shown = [Math.round(G*100), Math.round(angle), fmt(op.V,2), fmt(op.I*1000,1), Math.round(P*1000)].join('|');
+    if (shown !== lastShown){
+      lastShown = shown;
+      el('r3G').textContent = Math.round(G*100) + '%';
+      el('r3A').textContent = cosI > 0 ? Math.round(angle) + '°' : 'de espaldas';
+      el('r3V').textContent = fmt(op.V, 2) + ' V';
+      el('r3I').textContent = fmt(op.I*1000, 1) + ' mA';
+      el('r3P').textContent = fmt(P*1000, 0) + ' mW';
+      const note = el('heatNote');
+      if (P > 0.8){ note.className = 'hot'; note.textContent = 'el pot va en ' + fmt(P,2) + ' W, se está calentando'; }
+      else if (G > 0 && G < 0.6){ note.className = ''; note.textContent = 'sol abajo del 60%, así no se mide'; }
+      else { note.className = ''; note.textContent = cosI > 0.97 ? 'sin sombra del palito, panel perpendicular' : ''; }
+    }
+  }
+
+  // ---------- tamaño y ciclo ----------
+  function resize(){
+    const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w/h;
+    const k = camera.aspect < 1.6 ? Math.min(1.9, 1.6/camera.aspect) : 1;
+    camera.position.copy(target).add(baseOffset.clone().multiplyScalar(k));
+    camera.updateProjectionMatrix();
+    if (controls) controls.update(); else camera.lookAt(target);
+    kick();
+  }
+  let visible = true, running = false, last = 0;
+  function tick(now){
+    if (!visible || document.hidden){ running = false; return; }
+    const dt = Math.min(0.05, (now - last)/1000 || 0.016); last = now;
+    update(dt);
+    if (controls) controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
+  }
+  function kick(){ if (!running){ running = true; last = performance.now(); requestAnimationFrame(tick); } }
+  if ('IntersectionObserver' in window){ new IntersectionObserver(es=>{ visible = es[0].isIntersecting; if (visible) kick(); }).observe(stage); }
+  document.addEventListener('visibilitychange', ()=>{ if (!document.hidden) kick(); });
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(stage); else window.addEventListener('resize', resize);
+
+  setCfg3('uno'); syncHourUI(); syncPotUI();
+  sunAt(st.hour, sunPos); qT.setFromUnitVectors(UP, fixedN); A.pivot.quaternion.copy(qT); B.pivot.quaternion.copy(qT);
+  resize(); update(0.016); renderer.render(scene, camera); kick();
+})();
+</script>
